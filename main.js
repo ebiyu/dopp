@@ -3,6 +3,8 @@ var ctx =canvas.getContext('2d');
 
 var running=false;
 
+var filename='ambulance.png'
+
 var circles=[];
 
 var mx,my;
@@ -29,9 +31,11 @@ window.onkeypress=function(e){
             break;
         case 'l':
             cx+=5;
+            filename='ambulance.png'
             break;
         case 'h':
             cx-=5;
+            filename='ambulance-rev.png'
             break;
         case 'Enter':
             circles=[];
@@ -76,7 +80,7 @@ function draw(){
     }
 
     var img=new Image();
-    img.src='ambulance.png'
+    img.src=filename;
     img.onload=function(){
         ctx.drawImage(img,0,0,450,330,cx-50,cy-50,100,100);
     };
