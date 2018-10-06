@@ -3,7 +3,11 @@ var ctx =canvas.getContext('2d');
 
 var running=false;
 
-var filename='ambulance.png'
+var img=new Image();
+img.src='ambulance.png';
+
+var icaston=new Image();
+icaston.src='caston.png';
 
 var circles=[];
 
@@ -33,11 +37,11 @@ window.onkeypress=function(e){
             break;
         case 'l':
             cx+=5;
-            filename='ambulance.png'
+            img.src='ambulance.png';
             break;
         case 'h':
             cx-=5;
-            filename='ambulance-rev.png'
+            img.src='ambulance-rev.png';
             break;
         case 'Enter':
             circles=[];
@@ -95,21 +99,13 @@ function draw(){
         circle(circles[i][0],circles[i][1],circles[i][2]);
     }
 
-    var img=new Image();
-    img.src=filename;
-    img.onload=function(){
-        ctx.drawImage(img,0,0,450,330,cx-50,cy-50,100,100);
-    };
+    ctx.drawImage(img,0,0,450,330,cx-50,cy-50,100,100);
 
-    var icaston=new Image();
-    icaston.src='caston.png';
-    icaston.onload=function(){
-        if(caston=='l'){
-            ctx.drawImage(icaston,0,0,800,800,100,300,200,200);
-        }else if(caston=='r'){
-            ctx.drawImage(icaston,0,0,800,800,1200,300,200,200);
-        }
-    };
+    if(caston=='l'){
+        ctx.drawImage(icaston,0,0,800,800,100,300,200,200);
+    }else if(caston=='r'){
+        ctx.drawImage(icaston,0,0,800,800,1200,300,200,200);
+    }
 }
 
 function circle(rad,x,y){
