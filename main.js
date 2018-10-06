@@ -42,6 +42,7 @@ window.onkeypress=function(e){
             cx=400;
             cy=400;
             running=true;
+            document.getElementById('instruction').innerHTML='';
             break;
         case 'm':
             cx=mx;
