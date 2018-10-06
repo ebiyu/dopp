@@ -49,6 +49,8 @@ window.onkeypress=function(e){
             cy=my;
         case 'r':
             circles=[];
+            cx=400;
+            cy=400;
             running=false;
             draw();
     }
