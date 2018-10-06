@@ -7,6 +7,8 @@ var filename='ambulance.png'
 
 var circles=[];
 
+var caston='0';
+
 var mx,my;
 var cx,cy;
 canvas.addEventListener('mousemove', function (evt) {
@@ -48,11 +50,21 @@ window.onkeypress=function(e){
             cx=mx;
             cy=my;
             break;
+        case 'a':
+            caston='l';
+            break;
+        case 's':
+            caston='0';
+            break;
+        case 'd':
+            caston='r';
+            break;
         case 'r':
             circles=[];
             cx=400;
             cy=400;
             running=false;
+            document.getElementById('instruction').innerHTML='';
             draw();
     }
 }
@@ -87,6 +99,16 @@ function draw(){
     img.src=filename;
     img.onload=function(){
         ctx.drawImage(img,0,0,450,330,cx-50,cy-50,100,100);
+    };
+
+    var icaston=new Image();
+    icaston.src='caston.png';
+    icaston.onload=function(){
+        if(caston=='l'){
+            ctx.drawImage(icaston,0,0,800,800,100,300,200,200);
+        }else if(caston=='r'){
+            ctx.drawImage(icaston,0,0,800,800,1200,300,200,200);
+        }
     };
 }
 
