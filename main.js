@@ -1,13 +1,19 @@
 var canvas=document.getElementById('can')
 var ctx =canvas.getContext('2d');
 
+var running=false;
+var mute=false;
+
 var circles=[];
 
 var mx,my;
+var cx,cy;
 canvas.addEventListener('mousemove', function (evt) {
     var mousePos = getMousePosition(canvas, evt);
     mx=mousePos.x;
+    cx=mx;
     my=mousePos.y;
+    cy=my;
 }, false);
 function getMousePosition(canvas, evt) {
     var rect = canvas.getBoundingClientRect();
@@ -17,18 +23,42 @@ function getMousePosition(canvas, evt) {
     };
 }
 
+window.onkeypress=function(e){
+    console.log(e.key);
+    switch(e.key){
+        case 'm':
+            mute=!mute;
+            break;
+        case ' ':
+            e.preventDefault();
+            running=!running;
+            break;
+        case 'r':
+            circles=[];
+            running=false;
+            mute=false;
+            draw();
+    }
+}
+
 setInterval(function (evt) {
-    circles.push([0,mx,my]);
-    if(circles[0][0]>1000){
-        circles.shift();
+    if(!mute&&running){
+        circles.push([0,cx,cy]);
+    }
+    if(circles.length!=0){
+        if(circles[0][0]>1000){
+            circles.shift();
+        }
     }
 }, 200);
 
 setInterval(function (evt) {
-    for(i=0;i<circles.length;i++){
-        circles[i][0]+=10;
+    if(running){
+        for(i=0;i<circles.length;i++){
+            circles[i][0]+=10;
+        }
+        draw()
     }
-    draw()
 }, 30);
 
 function draw(){
