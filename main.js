@@ -47,6 +47,7 @@ window.onkeypress=function(e){
         case 'm':
             cx=mx;
             cy=my;
+            break;
         case 'r':
             circles=[];
             cx=400;
