@@ -2,7 +2,6 @@ var canvas=document.getElementById('can')
 var ctx =canvas.getContext('2d');
 
 var running=false;
-var mute=false;
 
 var circles=[];
 
@@ -11,9 +10,7 @@ var cx,cy;
 canvas.addEventListener('mousemove', function (evt) {
     var mousePos = getMousePosition(canvas, evt);
     mx=mousePos.x;
-    cx=mx;
     my=mousePos.y;
-    cy=my;
 }, false);
 function getMousePosition(canvas, evt) {
     var rect = canvas.getBoundingClientRect();
@@ -26,23 +23,34 @@ function getMousePosition(canvas, evt) {
 window.onkeypress=function(e){
     console.log(e.key);
     switch(e.key){
-        case 'm':
-            mute=!mute;
-            break;
         case ' ':
             e.preventDefault();
             running=!running;
             break;
+        case 'l':
+            cx+=5;
+            break;
+        case 'h':
+            cx-=5;
+            break;
+        case 'Enter':
+            circles=[];
+            cx=400;
+            cy=400;
+            running=true;
+            break;
+        case 'm':
+            cx=mx;
+            cy=my;
         case 'r':
             circles=[];
             running=false;
-            mute=false;
             draw();
     }
 }
 
 setInterval(function (evt) {
-    if(!mute&&running){
+    if(running){
         circles.push([0,cx,cy]);
     }
     if(circles.length!=0){
@@ -66,6 +74,12 @@ function draw(){
     for(i=0;i<circles.length;i++){
         circle(circles[i][0],circles[i][1],circles[i][2]);
     }
+
+    var img=new Image();
+    img.src='ambulance.png'
+    img.onload=function(){
+        ctx.drawImage(img,0,0,450,330,cx-50,cy-50,100,100);
+    };
 }
 
 function circle(rad,x,y){
