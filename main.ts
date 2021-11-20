@@ -28,8 +28,8 @@ let observer = { x: (width * 3) / 4, y: height / 2 };
 
 let mousePos = { x: 0, y: 0 };
 
-let hagenMoving = { left: false, right: false };
-let observerMoving = { left: false, right: false };
+let hagenMoving = { left: false, right: false, up: false, down: false };
+let observerMoving = { left: false, right: false, up: false, down: false };
 
 let mouseMode: null | 'hagen' = null;
 
@@ -53,16 +53,28 @@ function getMousePosition(canvas: HTMLCanvasElement, e: MouseEvent) {
 window.addEventListener('keydown', function (e) {
   switch (e.key) {
     case 'j':
-      hagenMoving.left = true;
-      break;
-    case 'l':
-      hagenMoving.right = true;
-      break;
-    case 'a':
       observerMoving.left = true;
       break;
-    case 'd':
+    case 'l':
       observerMoving.right = true;
+      break;
+    case 'i':
+      observerMoving.up = true;
+      break;
+    case 'k':
+      observerMoving.down = true;
+      break;
+    case 'a':
+      hagenMoving.left = true;
+      break;
+    case 'd':
+      hagenMoving.right = true;
+      break;
+    case 'w':
+      hagenMoving.up = true;
+      break;
+    case 's':
+      hagenMoving.down = true;
       break;
   }
 });
@@ -70,16 +82,28 @@ window.addEventListener('keydown', function (e) {
 window.addEventListener('keyup', function (e) {
   switch (e.key) {
     case 'j':
-      hagenMoving.left = false;
-      break;
-    case 'l':
-      hagenMoving.right = false;
-      break;
-    case 'a':
       observerMoving.left = false;
       break;
-    case 'd':
+    case 'l':
       observerMoving.right = false;
+      break;
+    case 'i':
+      observerMoving.up = false;
+      break;
+    case 'k':
+      observerMoving.down = false;
+      break;
+    case 'a':
+      hagenMoving.left = false;
+      break;
+    case 'd':
+      hagenMoving.right = false;
+      break;
+    case 'w':
+      hagenMoving.up = false;
+      break;
+    case 's':
+      hagenMoving.down = false;
       break;
   }
 });
@@ -97,15 +121,6 @@ window.addEventListener('keypress', function (e) {
         mouseMode = 'hagen';
       }
       break;
-    case 'a':
-      caston = 'l';
-      break;
-    case 's':
-      caston = '0';
-      break;
-    case 'd':
-      caston = 'r';
-      break;
   }
 });
 
@@ -119,7 +134,11 @@ function updatePosition() {
     hagen.y = mousePos.y;
   } else {
     const dx = -(hagenMoving.left ? 1 : 0) + (hagenMoving.right ? 1 : 0);
-    hagen.x += 5 * dx;
+    const dy = -(hagenMoving.up ? 1 : 0) + (hagenMoving.down ? 1 : 0);
+
+    const multiplyer = dx != 0 && dy != 0 ? 0.5 ** 0.5 : 1;
+    hagen.x += 5 * dx * multiplyer;
+    hagen.y += 5 * dy * multiplyer;
     switch (hagen.direction) {
       case 'left':
         if (dx > 0) hagen.direction = 'right';
@@ -129,9 +148,13 @@ function updatePosition() {
         break;
     }
   }
-
-  const dx = -(observerMoving.left ? 1 : 0) + (observerMoving.right ? 1 : 0);
-  observer.x += 5 * dx;
+  {
+    const dx = -(observerMoving.left ? 1 : 0) + (observerMoving.right ? 1 : 0);
+    const dy = -(observerMoving.up ? 1 : 0) + (observerMoving.down ? 1 : 0);
+    const multiplyer = dx != 0 && dy != 0 ? 0.5 ** 0.5 : 1;
+    observer.x += 5 * dx * multiplyer;
+    observer.y += 5 * dy * multiplyer;
+  }
 }
 setInterval(updatePosition, 20);
 
@@ -166,31 +189,6 @@ function draw() {
     drawCircle(circles[i][0], circles[i][1], circles[i][2]);
   }
 
-  // if (caston == 'l') {
-  //   ctx.drawImage(
-  //     icaston,
-  //     0,
-  //     0,
-  //     800,
-  //     800,
-  //     width / 5 - castonSize / 2,
-  //     height / 2 - castonSize / 2,
-  //     castonSize,
-  //     castonSize,
-  //   );
-  // } else if (caston == 'r') {
-  //   ctx.drawImage(
-  //     icaston,
-  //     0,
-  //     0,
-  //     800,
-  //     800,
-  //     (width * 4) / 5 - castonSize / 2,
-  //     height / 2 - castonSize / 2,
-  //     castonSize,
-  //     castonSize,
-  //   );
-  // }
   const hagenImg = hagen.direction == 'left' ? hagenImgLeft : hagenImgRight;
   ctx.drawImage(hagenImg, 0, 0, 450, 330, hagen.x - 50, hagen.y - 50, 100, 100);
 
