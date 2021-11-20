@@ -1,20 +1,20 @@
 <!DOCTYPE html>
-<html lang='ja'>
-<head>
-<meta charset='utf-8'>
-</head>
-<body>
-<div id='instruction'>
-Enter:スタート<br>
-Space:一時停止<br>
-R:リセット<br>
-L:右へ<br>
-H:左へ<br>
-A:左にCASTONを表示<br>
-S:CASTONを非表示<br>
-D:右にCASTONを表示<br>
-</div>
-<canvas id="can" width="1500" height="1000"></canvas>
-<script src='main.js'></script>
-</body>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <canvas id="can" width="1000" height="500"></canvas>
+      <ul id="instruction">
+        <li>Space:再生 / 停止</li>
+        <li>J, L: 波源を操作</li>
+        <li>A:左にCASTONを表示</li>
+        <li>S:CASTONを非表示</li>
+        <li>D:右にCASTONを表示</li>
+      </ul>
+    </div>
+    <script src="main.js"></script>
+  </body>
 </html>
