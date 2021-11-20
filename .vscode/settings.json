@@ -1,0 +1,12 @@
+{
+  "editor.formatOnSave": true,
+  "extensions.showRecommendationsOnlyOnDemand": false,
+  "[vue]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "css.validate": false,
+  "scss.validate": false
+}
