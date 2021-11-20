@@ -25,5 +25,7 @@ jobs:
           git config --local user.name "bot"
       - name: Commit files
         run: |
+          git checkout -b gh-pages
           git add --force -- main.js
+          git commit -m "deploy"
           git push origin gh-pages -f
