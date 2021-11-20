@@ -19,8 +19,11 @@ jobs:
         run: yarn install --frozen-lockfile
       - name: build tsc
         run: yarn run tsc
-      - name: Deploy website
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .
+      - name: git setting
+        run: |
+          git config --local user.email "me@ebiyuu.com"
+          git config --local user.name "bot"
+      - name: Commit files
+        run: |
+          git add --force -- main.js
+          git push origin gh-pages -f
