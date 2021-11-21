@@ -1,5 +1,7 @@
 const canvas = document.getElementById('can') as HTMLCanvasElement;
 const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+const speedSpan = document.getElementById('speedSpan') as HTMLSpanElement;
+const freqSpan = document.getElementById('freqSpan') as HTMLSpanElement;
 const width = canvas.width;
 const height = canvas.height;
 console.log({ width, height });
@@ -13,6 +15,8 @@ const icaston = new Image();
 icaston.src = 'caston.png';
 
 let running = true;
+let speed = 0.5;
+let freq = 4; // frequency \propto ( 1 / freq )
 
 let circles: [number, number, number][] = [];
 
@@ -121,6 +125,33 @@ window.addEventListener('keypress', function (e) {
         mouseMode = 'hagen';
       }
       break;
+    case '1':
+      speed = 0.5;
+      break;
+    case '2':
+      speed = 0.7;
+      break;
+    case '3':
+      speed = 1;
+      break;
+    case '4':
+      speed = 1.5;
+      break;
+    case '5':
+      speed = 2;
+      break;
+    case '6':
+      freq = 8;
+      break;
+    case '7':
+      freq = 4;
+      break;
+    case '8':
+      freq = 2;
+      break;
+    case '9':
+      freq = 1;
+      break;
   }
 });
 
@@ -137,8 +168,8 @@ function updatePosition() {
     const dy = -(hagenMoving.up ? 1 : 0) + (hagenMoving.down ? 1 : 0);
 
     const multiplyer = dx != 0 && dy != 0 ? 0.5 ** 0.5 : 1;
-    hagen.x += 5 * dx * multiplyer;
-    hagen.y += 5 * dy * multiplyer;
+    hagen.x += 5 * speed * dx * multiplyer;
+    hagen.y += 5 * speed * dy * multiplyer;
     switch (hagen.direction) {
       case 'left':
         if (dx > 0) hagen.direction = 'right';
@@ -152,21 +183,26 @@ function updatePosition() {
     const dx = -(observerMoving.left ? 1 : 0) + (observerMoving.right ? 1 : 0);
     const dy = -(observerMoving.up ? 1 : 0) + (observerMoving.down ? 1 : 0);
     const multiplyer = dx != 0 && dy != 0 ? 0.5 ** 0.5 : 1;
-    observer.x += 5 * dx * multiplyer;
-    observer.y += 5 * dy * multiplyer;
+    observer.x += 5 * speed * dx * multiplyer;
+    observer.y += 5 * speed * dy * multiplyer;
   }
 }
 setInterval(updatePosition, 20);
 
+let prescaler = 0;
 setInterval(function (evt) {
   if (!running) return;
-  circles.push([0, hagen.x, hagen.y]);
-  if (circles.length != 0) {
-    if (circles[0][0] > 1000) {
-      circles.shift();
+  prescaler++;
+  if (prescaler >= freq) {
+    prescaler = 0;
+    circles.push([0, hagen.x, hagen.y]);
+    if (circles.length != 0) {
+      if (circles[0][0] > 1000) {
+        circles.shift();
+      }
     }
   }
-}, 200);
+}, 50);
 
 /**
  * 円の半径を大きくします。(音の伝播)
@@ -204,6 +240,9 @@ function draw() {
     castonSize,
     castonSize,
   );
+
+  speedSpan.innerText = `${speed}`;
+  freqSpan.innerText = `${8 / freq}`;
 }
 setInterval(draw, 20);
 
